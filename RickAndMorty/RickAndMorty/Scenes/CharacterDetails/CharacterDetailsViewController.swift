@@ -43,11 +43,6 @@ class CharacterDetailsViewController: UIViewController {
         getCharacter()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addObservers()
-    }
-    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         self.characterDetailsView.updateeConstraints()
@@ -65,11 +60,6 @@ class CharacterDetailsViewController: UIViewController {
         presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
-    }
-    
-    // MARK: - Deinit
-    deinit {
-        removeObservers()
     }
 }
 
@@ -94,23 +84,5 @@ extension CharacterDetailsViewController {
     private func getCharacter() {
         let request = CharacterDetails.GetCharacter.Request()
         interactor?.getCharacter(request: request)
-    }
-    
-    private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(imageDownloaded(_:)), name: NSNotification.Name("ImageDownloaded"), object: nil)
-    }
-    
-    private func removeObservers() {
-        NotificationCenter.default.removeObserver(self)
-    }
-}
-
-// MARK: - Selectors
-extension CharacterDetailsViewController {
-    @objc private func imageDownloaded(_ notification: Notification) {
-        guard let userInfo = notification.userInfo, let id = userInfo["id"] as? Int64, let data = userInfo["data"] as? Data else { return }
-        
-        guard let view = self.view as? CharacterDetailsView else { return }
-        view.updateImage(UIImage(data: data))
     }
 }

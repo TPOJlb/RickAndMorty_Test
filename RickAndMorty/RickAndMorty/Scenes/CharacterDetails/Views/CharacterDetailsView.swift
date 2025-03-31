@@ -150,9 +150,5 @@ class CharacterDetailsView: UIView {
             make.width.equalTo(UIScreen.main.bounds.width - 32)
         }
     }
-    
-    func updateImage(_ image: UIImage?) {
-        imageView.image = image
-    }
 }
 
